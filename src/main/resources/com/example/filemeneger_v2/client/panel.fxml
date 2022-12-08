@@ -4,11 +4,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="com.example.filemeneger_v2.PanelController">
+<VBox alignment="CENTER" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="com.example.filemeneger_v2.client.PanelController">
     <HBox>
         <ComboBox fx:id="disksBox" onAction="#selectDiskAction"/>
         <TextField fx:id="pathField" editable="false" HBox.hgrow="ALWAYS" />
         <Button text="Вверх" onAction="#btnPathUpAction"/>
     </HBox>
     <TableView fx:id="filesTable" VBox.vgrow="ALWAYS"/>
+
+    <properties>
+        <ctrl><fx:reference source="controller"/></ctrl>
+    </properties>
 </VBox>

@@ -1,4 +1,4 @@
-package com.example.filemeneger_v2;
+package com.example.filemeneger_v2.client;
 
 import java.io.IOException;
 import java.nio.file.Files;

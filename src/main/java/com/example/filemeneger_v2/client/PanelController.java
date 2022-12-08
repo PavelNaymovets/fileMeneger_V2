@@ -1,11 +1,14 @@
-package com.example.filemeneger_v2;
+package com.example.filemeneger_v2.client;
 
+import com.example.filemeneger_v2.client.FileInfo;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -71,6 +74,18 @@ public class PanelController implements Initializable {
         }
         disksBox.getSelectionModel().select(0);
 
+        filesTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(mouseEvent.getClickCount() == 2) {
+                    Path path = Paths.get(pathField.getText()).resolve(filesTable.getSelectionModel().getSelectedItem().getFilename());
+                    if(Files.isDirectory(path)) {
+                        updateList(path);
+                    }
+                }
+            }
+        });
+
         updateList(Paths.get(".")); //папка из которой тянется список файлов. Если оставить ".", будут файлы и папки из корня проекта.
     }
 
@@ -96,5 +111,16 @@ public class PanelController implements Initializable {
     public void selectDiskAction(ActionEvent actionEvent) {
         ComboBox<String> element = (ComboBox<String>) actionEvent.getSource();
         updateList(Paths.get(element.getSelectionModel().getSelectedItem()));
+    }
+
+    public String getSelectedFileName() { //какая панель выбрана
+        if(!filesTable.isFocused()) {
+            return null;
+        }
+        return filesTable.getSelectionModel().getSelectedItem().getFilename();
+    }
+
+    public String getCurrentPath() { //запрос текущего пути
+        return pathField.getText();
     }
 }

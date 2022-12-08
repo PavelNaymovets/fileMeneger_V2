@@ -1,8 +1,11 @@
 module com.example.filemeneger_v2 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires io.netty.codec;
+    requires org.slf4j;
+    requires lombok;
+    requires io.netty.transport;
 
-
-    opens com.example.filemeneger_v2 to javafx.fxml;
-    exports com.example.filemeneger_v2;
+    exports com.example.filemeneger_v2.client;
+    opens com.example.filemeneger_v2.client to javafx.fxml;
 }
