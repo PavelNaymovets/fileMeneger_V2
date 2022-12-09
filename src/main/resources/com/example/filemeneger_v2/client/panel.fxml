@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="com.example.filemeneger_v2.client.PanelController">
+<VBox spacing="5" alignment="CENTER" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="com.example.filemeneger_v2.client.PanelController">
     <HBox>
         <ComboBox fx:id="disksBox" onAction="#selectDiskAction"/>
         <TextField fx:id="pathField" editable="false" HBox.hgrow="ALWAYS" />

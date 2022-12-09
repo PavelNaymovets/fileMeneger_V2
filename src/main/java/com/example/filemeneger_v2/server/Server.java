@@ -36,7 +36,7 @@ public class Server {
                             );
                         }
                     });
-            ChannelFuture future = bootstrap.bind(8189).sync();
+            ChannelFuture future = bootstrap.bind(8188).sync();
             log.debug("Сервер запущен...");
 
             future.channel().closeFuture().sync();

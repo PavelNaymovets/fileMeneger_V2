@@ -1,13 +1,12 @@
 package com.example.filemeneger_v2.server;
 
-import com.example.filemeneger_v2.common.Message;
-import io.netty.channel.ChannelHandler;
+import com.example.filemeneger_v2.common.AbstractMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class MessageHandler extends SimpleChannelInboundHandler<Message> {
+public class MessageHandler extends SimpleChannelInboundHandler<AbstractMessage> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -26,7 +25,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<Message> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, AbstractMessage absMsg) throws Exception {
         ctx.writeAndFlush("Привет от нетти сервера!");
     }
 }

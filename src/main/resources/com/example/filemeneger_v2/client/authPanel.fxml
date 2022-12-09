@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="350" prefWidth="270" spacing="5" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.filemeneger_v2.client.AuthPanelController">
+    <VBox alignment="CENTER">
+        <Text fx:id="topText" text="Подключение к серверу" textAlignment="CENTER"/>
+        <padding>
+            <Insets bottom="10" />
+        </padding>
+    </VBox>
+    <HBox spacing="5">
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <TextField fx:id="host" prefHeight="30" promptText="Введите IP адрес хоста" />
+        </VBox>
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <TextField fx:id="port" prefHeight="30" promptText="Введите порт хоста" />
+        </VBox>
+    </HBox>
+    <Button fx:id="connectButton" alignment="center" maxWidth="Infinity" onAction="#connectBtnAction" prefHeight="30" text="Подключиться" />
+    <VBox alignment="CENTER">
+        <Text fx:id="midlText" text="Вход в файловый менеджер" textAlignment="CENTER"/>
+        <padding>
+            <Insets bottom="10" top="15" />
+        </padding>
+    </VBox>
+    <TextField fx:id="login" prefHeight="30" promptText="Введите логин" />
+    <TextField fx:id="password" prefHeight="30" promptText="Введите пароль" />
+    <HBox spacing="5">
+        <Button fx:id="loginButton" maxWidth="Infinity" onAction="#loginBtnAction" prefHeight="30" prefWidth="200" text="Войти" HBox.hgrow="ALWAYS" />
+        <Button fx:id="registerButton" maxWidth="Infinity" onAction="#registerBtnAction" prefHeight="30" prefWidth="200" text="Регистрация" HBox.hgrow="ALWAYS" />
+    </HBox>
+    <Button maxWidth="Infinity" onAction="#quitBtnAction" prefHeight="30" text="Выход" />
+    <padding>
+        <Insets bottom="5" left="5" right="5" top="5" />
+    </padding>
+</VBox>
