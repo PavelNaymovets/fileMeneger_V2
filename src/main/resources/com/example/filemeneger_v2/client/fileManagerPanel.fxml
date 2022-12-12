@@ -11,8 +11,8 @@
             <fx:include fx:id="leftPanel" source="panel.fxml" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS"/>
         </VBox>
         <VBox alignment="CENTER" HBox.hgrow="ALWAYS" spacing="5">
-            <Button maxWidth="Infinity" HBox.hgrow="ALWAYS" prefHeight="35" text="&gt;&gt;"/>
-            <Button maxWidth="Infinity" HBox.hgrow="ALWAYS" prefHeight="35" text="&lt;&lt;"/>
+            <Button maxWidth="Infinity" HBox.hgrow="ALWAYS" prefHeight="35" text="&gt;&gt;" onAction="#copyBtnAction" focusTraversable="false"/>
+            <Button maxWidth="Infinity" HBox.hgrow="ALWAYS" prefHeight="35" text="&lt;&lt;" onAction="#copyBtnAction" focusTraversable="false"/>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" />
             </padding>

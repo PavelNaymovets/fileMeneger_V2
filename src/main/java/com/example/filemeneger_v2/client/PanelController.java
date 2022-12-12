@@ -86,7 +86,7 @@ public class PanelController implements Initializable {
             }
         });
 
-        updateList(Paths.get(".")); //папка из которой тянется список файлов. Если оставить ".", будут файлы и папки из корня проекта.
+        updateList(Paths.get(".", "cloud-storage-client", "clietn")); //папка из которой тянется список файлов. Если оставить ".", будут файлы и папки из корня проекта.
     }
 
     public void updateList(Path path) {
