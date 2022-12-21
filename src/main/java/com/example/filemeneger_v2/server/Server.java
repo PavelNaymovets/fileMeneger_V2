@@ -20,7 +20,7 @@ public class Server {
     //Запуск сервера
     public void start() {
         EventLoopGroup boss = new NioEventLoopGroup(1);
-        EventLoopGroup worker = new NioEventLoopGroup();
+        EventLoopGroup worker = new NioEventLoopGroup(2);
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();

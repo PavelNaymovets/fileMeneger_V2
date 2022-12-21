@@ -1,9 +1,11 @@
 package com.example.filemeneger_v2.client;
 
+import com.example.filemeneger_v2.common.directorysWork.DirectoryCreator;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,11 +14,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ResourceBundle;
 
-public class FileManagerPanelController {
+public class FileManagerPanelController implements Initializable {
 
     @FXML
     public VBox leftPanel;
@@ -24,14 +28,14 @@ public class FileManagerPanelController {
     @FXML
     public VBox rightPanel;
 
+    private PanelController leftPC;
+    private PanelController rightPC;
+
     public void btnExitAction(ActionEvent actionEvent) {
         Platform.exit();
     }
 
     public void copyBtnAction() {
-        PanelController leftPC = (PanelController) leftPanel.getProperties().get("ctrl");
-        PanelController rightPC = (PanelController) rightPanel.getProperties().get("ctrl");
-
         if(leftPC.getSelectedFileName() == null && rightPC.getSelectedFileName() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Ни один файл не был выбран", ButtonType.OK);
             alert.showAndWait();
@@ -74,5 +78,30 @@ public class FileManagerPanelController {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Не удалось вернуться к окну регистрации", ButtonType.OK);
             alert.showAndWait();
         }
+    }
+
+    public void createDirectory(ActionEvent actionEvent) {
+        Path source = Paths.get(Paths.get("").toAbsolutePath().toString(),"11", "Тестовая директория");
+        DirectoryCreator filesWork = new DirectoryCreator();
+        filesWork.createAnyDirectory(source);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        PanelController leftPanelController = (PanelController) leftPanel.getProperties().get("ctrl");
+        PanelController rightPanelController = (PanelController) rightPanel.getProperties().get("ctrl");
+
+        this.leftPC = leftPanelController;
+        this.rightPC = rightPanelController;
+
+//        AuthPanelController controller = AuthPanelController.getAuthPanelController(); //пример получения логина из окна аутентификации
+//        String login = controller.getLogin();
+
+        Path of = Paths.get(""); //путь к корневой папке проекта
+        Path pathLeftPC = Paths.get(of.toAbsolutePath().toString(), "cloud-storage-client");
+        Path pathRightPC = Paths.get(of.toAbsolutePath().toString(), "cloud-storage-server");
+
+        leftPC.updateList(pathLeftPC);
+        rightPC.updateList(pathRightPC);
     }
 }

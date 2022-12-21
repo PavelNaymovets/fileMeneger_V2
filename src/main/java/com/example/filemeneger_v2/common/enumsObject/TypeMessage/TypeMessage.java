@@ -1,5 +1,6 @@
-package com.example.filemeneger_v2.common;
+package com.example.filemeneger_v2.common.enumsObject.TypeMessage;
 
+//Объекты перечисления типов сообщений
 public enum TypeMessage {
     FILE_MESSAGE,
     LIST_MESSAGE,

@@ -29,6 +29,8 @@
         <Button maxWidth="Infinity" focusTraversable="false" prefHeight="30" prefWidth="300" text="Переместить файл"
                 HBox.hgrow="ALWAYS"/>
         <Button maxWidth="Infinity" focusTraversable="false" prefHeight="30" prefWidth="300" text="Удалить файл" HBox.hgrow="ALWAYS"/>
+        <Button maxWidth="Infinity" focusTraversable="false" prefHeight="30" prefWidth="300" text="Создать директорию" HBox.hgrow="ALWAYS"
+                onAction="#createDirectory"/>
         <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="15.0"/>
         </padding>

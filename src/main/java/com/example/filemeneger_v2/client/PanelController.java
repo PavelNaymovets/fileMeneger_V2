@@ -1,6 +1,6 @@
 package com.example.filemeneger_v2.client;
 
-import com.example.filemeneger_v2.client.FileInfo;
+import com.example.filemeneger_v2.client.fileInfo.FileInfo;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -85,8 +85,6 @@ public class PanelController implements Initializable {
                 }
             }
         });
-
-        updateList(Paths.get(".", "cloud-storage-client", "clietn")); //папка из которой тянется список файлов. Если оставить ".", будут файлы и папки из корня проекта.
     }
 
     public void updateList(Path path) {

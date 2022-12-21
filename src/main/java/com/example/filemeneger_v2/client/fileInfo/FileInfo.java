@@ -1,10 +1,17 @@
-package com.example.filemeneger_v2.client;
+package com.example.filemeneger_v2.client.fileInfo;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+
+/**
+ * Класс FileInfo описывает файл: имя,
+ *                                тип(файл, директория),
+ *                                размер,
+ *                                дата создания.
+ */
 
 public class FileInfo {
     public enum FileType {

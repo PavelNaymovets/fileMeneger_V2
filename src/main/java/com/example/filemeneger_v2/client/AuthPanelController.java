@@ -1,7 +1,11 @@
 package com.example.filemeneger_v2.client;
 
-import io.netty.handler.codec.serialization.ObjectDecoderInputStream;
-import io.netty.handler.codec.serialization.ObjectEncoderOutputStream;
+import com.example.filemeneger_v2.client.network.NetworkConnection;
+import com.example.filemeneger_v2.client.network.NetworkReader;
+import com.example.filemeneger_v2.client.network.NetworkWriter;
+import com.example.filemeneger_v2.client.showAlert.AlertShower;
+import com.example.filemeneger_v2.common.directorysWork.DirectoryCreator;
+import com.example.filemeneger_v2.common.enumsObject.NotificationAlertType.NotificationAlertType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,11 +23,13 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.Socket;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
+
+import static com.example.filemeneger_v2.common.enumsObject.NotificationAlertType.NotificationAlertType.ERROR;
+import static com.example.filemeneger_v2.common.enumsObject.NotificationAlertType.NotificationAlertType.INFORMATION;
 
 public class AuthPanelController implements Initializable {
 
@@ -43,39 +49,62 @@ public class AuthPanelController implements Initializable {
     public Button loginButton;
     @FXML
     public Button registerButton;
+    @FXML
     public Text midlText;
 
-    private ObjectEncoderOutputStream os;
-    private ObjectDecoderInputStream is;
+    private NetworkConnection networkConnection; //создание подключения к серверу. Вынес в свойства для закрытия соединения при нажатии на кнопнку "Выход".
+    private NetworkWriter networkWriter; //объект для отправки сообщений на сервер
+    private NetworkReader networkReader; //объект для чтения сообщений от сервера
+    private String hostData; //IP адрес хоста
+    private int portData; //номер порта
+    private static AuthPanelController authPanelController; //пример получения данных с текущего окна
+    private static int changeScene = 0; //возврат к сцене аутентификации
 
-    public static int changeScene = 0 ; //возврат к сцене аутентификации
+    public void connectBtnAction(ActionEvent actionEvent) { //подключение к серверу (кнопка: Подключиться)
+        networkConnection = NetworkConnection.getNetworkConnectionInstance();
 
-    //Поключиться к серверу
-    public void connectBtnAction(ActionEvent actionEvent) {
-        try {
-            Socket socket = new Socket(host.getText(), Integer.parseInt(port.getText()));
-            this.os = new ObjectEncoderOutputStream(socket.getOutputStream());
-            this.is = new ObjectDecoderInputStream(socket.getInputStream());
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Удачное подключение к серверу. Введите логин и пароль", ButtonType.OK);
-            alert.showAndWait();
-            topText.setText("Вы подключены к серверу...");
-            host.setDisable(true);
-            port.setDisable(true);
-            connectButton.setDisable(true);
-            login.setDisable(false);
-            password.setDisable(false);
-            loginButton.setDisable(false);
-            registerButton.setDisable(false);
-            AuthPanelController.changeScene = 1;
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Не удалось подключиться к серверу", ButtonType.OK);
-            alert.showAndWait();
+        if (host.getText().equals("") || port.getText().equals("")) {
+            AlertShower.showAlert(ERROR, "Ошибка подключения к серверу.", "Не указаны IP адрес или порт хоста.");
+        } else {
+            hostData = host.getText(); //IP адрес хоста
+            portData = Integer.parseInt(port.getText()); //номер порта
+
+            boolean tryConnect = networkConnection.openConnection(hostData, portData);
+
+            if (tryConnect) { //если соединение установлено
+                topText.setText("Вы подключены к серверу...");
+                host.setDisable(true);
+                port.setDisable(true);
+                connectButton.setDisable(true);
+                login.setDisable(false);
+                password.setDisable(false);
+                loginButton.setDisable(false);
+                registerButton.setDisable(false);
+                AuthPanelController.changeScene = 1;
+                AlertShower.showAlert(INFORMATION, "Удачное подключение к серверу.", "Введите логин и пароль для входа в файловый менеджер.");
+            } else {
+                AlertShower.showAlert(ERROR, "Ошибка подключения к серверу.", "Неправильно указан порт или адрес хоста.");
+            }
         }
     }
 
     //Войти в файловый менеджер
     public void loginBtnAction(ActionEvent actionEvent) {
+        DirectoryCreator clientDir = new DirectoryCreator();
+        //Директория создается после успешной авторизации
+        clientDir.createStartDirectory(Paths.get(Paths.get("").toAbsolutePath().toString(), "cloud-storage-client", login.getText()));
         launchMainPanel(actionEvent);
+
+        networkWriter = new NetworkWriter();
+        networkReader = new NetworkReader(networkWriter);
+
+        networkWriter.sendAuthMessage("log1","pass1");
+
+    }
+
+
+    public static AuthPanelController getAuthPanelController() {
+        return authPanelController;
     }
 
     //Регистрация в системе
@@ -85,6 +114,7 @@ public class AuthPanelController implements Initializable {
 
     //Выйти из приложения
     public void quitBtnAction(ActionEvent actionEvent) {
+        networkConnection.closeConnection();
         Platform.exit();
     }
 
@@ -111,6 +141,7 @@ public class AuthPanelController implements Initializable {
             stage.setTitle("Файловый менеджер");
             stage.show();
         } catch (IOException e) {
+            e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR, "Не удалось войти в файловый менеджер", ButtonType.OK);
             alert.showAndWait();
         }
@@ -119,9 +150,13 @@ public class AuthPanelController implements Initializable {
     //Запуск главной сцены
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        authPanelController = this; //пример получения данных с текущего окна
+
+        //кастомизация текста
         topText.setFont(Font.font(null, FontWeight.BOLD, 15));
         midlText.setFont(Font.font(null, FontWeight.BOLD, 15));
-        if(AuthPanelController.changeScene == 0) {
+
+        if (AuthPanelController.changeScene == 0) {
             login.setDisable(true);
             password.setDisable(true);
             loginButton.setDisable(true);
