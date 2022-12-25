@@ -1,18 +1,20 @@
-package com.example.filemeneger_v2.server;
+package com.example.filemeneger_v2.server.startServer;
 
+import com.example.filemeneger_v2.server.dataBase.DataBaseConnector;
+import com.example.filemeneger_v2.server.messageHandler.MessageHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.ServerChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.serialization.ClassResolver;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import lombok.extern.slf4j.Slf4j;
+
+import java.sql.Connection;
 
 @Slf4j
 public class Server {
@@ -36,7 +38,7 @@ public class Server {
                             );
                         }
                     });
-            ChannelFuture future = bootstrap.bind(8188).sync();
+            ChannelFuture future = bootstrap.bind(8187).sync();
             log.debug("Сервер запущен...");
 
             future.channel().closeFuture().sync();

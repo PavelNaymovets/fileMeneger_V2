@@ -1,4 +1,4 @@
-package com.example.filemeneger_v2.server;
+package com.example.filemeneger_v2.server.startServer;
 
 import lombok.extern.slf4j.Slf4j;
 

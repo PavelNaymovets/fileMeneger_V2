@@ -82,8 +82,7 @@ public class FileManagerPanelController implements Initializable {
 
     public void createDirectory(ActionEvent actionEvent) {
         Path source = Paths.get(Paths.get("").toAbsolutePath().toString(),"11", "Тестовая директория");
-        DirectoryCreator filesWork = new DirectoryCreator();
-        filesWork.createAnyDirectory(source);
+        DirectoryCreator.createAnyDirectory(source);
     }
 
     @Override

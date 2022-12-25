@@ -1,6 +1,7 @@
-package com.example.filemeneger_v2.client.fileInfo;
+package com.example.filemeneger_v2.common.fileInfo;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ import java.time.ZoneOffset;
  *                                дата создания.
  */
 
-public class FileInfo {
+public class FileInfo implements Serializable {
     public enum FileType {
         FILE("F"), DIRECTORY("D");
 

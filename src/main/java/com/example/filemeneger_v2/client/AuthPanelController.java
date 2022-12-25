@@ -22,6 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,26 +53,28 @@ public class AuthPanelController implements Initializable {
     @FXML
     public Text midlText;
 
-    private NetworkConnection networkConnection; //создание подключения к серверу. Вынес в свойства для закрытия соединения при нажатии на кнопнку "Выход".
-    private NetworkWriter networkWriter; //объект для отправки сообщений на сервер
-    private NetworkReader networkReader; //объект для чтения сообщений от сервера
+    private NetworkConnection networkConnection; //подключение к серверу
+    private NetworkWriter networkWriter; //отправка сообщений на сервер
+    private NetworkReader networkReader; //чтение сообщений от сервера
     private String hostData; //IP адрес хоста
     private int portData; //номер порта
-    private static AuthPanelController authPanelController; //пример получения данных с текущего окна
     private static int changeScene = 0; //возврат к сцене аутентификации
 
     public void connectBtnAction(ActionEvent actionEvent) { //подключение к серверу (кнопка: Подключиться)
-        networkConnection = NetworkConnection.getNetworkConnectionInstance();
-
         if (host.getText().equals("") || port.getText().equals("")) {
             AlertShower.showAlert(ERROR, "Ошибка подключения к серверу.", "Не указаны IP адрес или порт хоста.");
         } else {
             hostData = host.getText(); //IP адрес хоста
             portData = Integer.parseInt(port.getText()); //номер порта
 
+            networkConnection = NetworkConnection.getNetworkConnectionInstance();
             boolean tryConnect = networkConnection.openConnection(hostData, portData);
 
             if (tryConnect) { //если соединение установлено
+                networkWriter = NetworkWriter.getNetworkWriterInstance();
+                networkReader = NetworkReader.getNetworkReaderInstance();
+                networkReader.readMessageFromServer();
+
                 topText.setText("Вы подключены к серверу...");
                 host.setDisable(true);
                 port.setDisable(true);
@@ -90,21 +93,14 @@ public class AuthPanelController implements Initializable {
 
     //Войти в файловый менеджер
     public void loginBtnAction(ActionEvent actionEvent) {
-        DirectoryCreator clientDir = new DirectoryCreator();
-        //Директория создается после успешной авторизации
-        clientDir.createStartDirectory(Paths.get(Paths.get("").toAbsolutePath().toString(), "cloud-storage-client", login.getText()));
-        launchMainPanel(actionEvent);
+        String log = login.getText();
+        String pass = password.getText();
+        String hashPassword = DigestUtils.sha256Hex(pass);
 
-        networkWriter = new NetworkWriter();
-        networkReader = new NetworkReader(networkWriter);
+        networkWriter.sendAuthMessage(log,hashPassword); //отправляю сообщение об авторизации на сервер
 
-        networkWriter.sendAuthMessage("log1","pass1");
+//        launchMainPanel(actionEvent);
 
-    }
-
-
-    public static AuthPanelController getAuthPanelController() {
-        return authPanelController;
     }
 
     //Регистрация в системе
@@ -150,9 +146,8 @@ public class AuthPanelController implements Initializable {
     //Запуск главной сцены
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        authPanelController = this; //пример получения данных с текущего окна
 
-        //кастомизация текста
+        //Кастомизация текста
         topText.setFont(Font.font(null, FontWeight.BOLD, 15));
         midlText.setFont(Font.font(null, FontWeight.BOLD, 15));
 

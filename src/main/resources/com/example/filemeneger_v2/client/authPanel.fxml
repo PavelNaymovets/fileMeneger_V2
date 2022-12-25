@@ -28,7 +28,7 @@
         </padding>
     </VBox>
     <TextField fx:id="login" prefHeight="30" promptText="Введите логин" />
-    <TextField fx:id="password" prefHeight="30" promptText="Введите пароль" />
+    <PasswordField fx:id="password" prefHeight="30" promptText="Введите пароль" />
     <HBox spacing="5">
         <Button fx:id="loginButton" maxWidth="Infinity" onAction="#loginBtnAction" prefHeight="30" prefWidth="200" text="Войти" HBox.hgrow="ALWAYS" />
         <Button fx:id="registerButton" maxWidth="Infinity" onAction="#registerBtnAction" prefHeight="30" prefWidth="200" text="Регистрация" HBox.hgrow="ALWAYS" />

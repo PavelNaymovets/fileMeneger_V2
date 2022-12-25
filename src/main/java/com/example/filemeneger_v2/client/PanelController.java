@@ -1,6 +1,6 @@
 package com.example.filemeneger_v2.client;
 
-import com.example.filemeneger_v2.client.fileInfo.FileInfo;
+import com.example.filemeneger_v2.common.fileInfo.FileInfo;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;

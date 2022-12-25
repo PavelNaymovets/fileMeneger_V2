@@ -13,7 +13,7 @@ import java.util.Optional;
 @Slf4j
 public class DirectoryCreator {
     //Создание стартовой директории
-    public void createStartDirectory(Path dirPath) {
+    public static void createStartDirectory(Path dirPath) {
         try {
             if (!Files.exists(dirPath)) {
                 log.debug("Директории " + dirPath.getFileName().toString() + " не существует");
@@ -26,7 +26,7 @@ public class DirectoryCreator {
     }
 
     //Создание любой директории внутри сервера или клиента
-    public void createAnyDirectory(Path dirPath) {
+    public static void createAnyDirectory(Path dirPath) {
         try {
             if (!Files.exists(dirPath)) {
                 log.debug("Директории " + dirPath.getFileName().toString() + " не существует");

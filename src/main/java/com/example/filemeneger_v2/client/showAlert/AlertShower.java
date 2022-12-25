@@ -15,16 +15,18 @@ public class AlertShower {
     private static Alert alert; //всплывающее уведомление
 
     public static void showAlert(NotificationAlertType notificationType, String errorType, String messageError) {
-        if (notificationType == ERROR) { //тип: ошибка
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Ошибка"); //заголовок всплывающего окна
-        } else if (notificationType == INFORMATION) { //тип: подтверждение
-            alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Подтверждение"); //заголовок всплывающего окна
-        }
-        alert.setHeaderText(errorType); //тип ошибки. Например: ошибка подключения к серверу
-        alert.setContentText(messageError); //описание ошибки
+        Platform.runLater(() -> {
+            if (notificationType == ERROR) { //тип: ошибка
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Ошибка"); //заголовок всплывающего окна
+            } else if (notificationType == INFORMATION) { //тип: подтверждение
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Подтверждение"); //заголовок всплывающего окна
+            }
+            alert.setHeaderText(errorType); //тип ошибки. Например: ошибка подключения к серверу
+            alert.setContentText(messageError); //описание ошибки
 
-        Platform.runLater(alert::showAndWait); //показываю сообщение
+            alert.showAndWait(); //показываю сообщение
+        });
     }
 }
